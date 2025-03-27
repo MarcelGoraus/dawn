@@ -6,7 +6,9 @@
   "author": "Marcel Goraus",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "format": "prettier --write .",
+    "dev": "shopify theme dev -e development"
   },
   "devDependencies": {
     "@shopify/prettier-plugin-liquid": "^1.9.0",

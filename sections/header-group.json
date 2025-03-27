@@ -15,9 +15,10 @@
           }
         }
       },
-      "block_order": [
-        "announcement-bar-0"
-      ]
+      "block_order": ["announcement-bar-0"]
+    },
+    "navigation": {
+      "type": "navigation"
     },
     "header": {
       "type": "header",
@@ -37,8 +38,5 @@
       }
     }
   },
-  "order": [
-    "announcement-bar",
-    "header"
-  ]
+  "order": ["announcement-bar", "navigation", "header"]
 }
