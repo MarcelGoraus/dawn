@@ -823,6 +823,94 @@
         "name": "Vorgestellte Kollektion"
       }
     },
+    "faq": {
+      "name": "FAQ",
+      "settings": {
+        "faq_title": {
+          "label": "Titel"
+        },
+        "faq_description": {
+          "label": "Beschreibung"
+        },
+        "content_width": {
+          "label": "Inhaltsbreite",
+          "options": {
+            "narrow": {
+              "label": "Schmal"
+            },
+            "standard": {
+              "label": "Standard"
+            },
+            "wide": {
+              "label": "Breit"
+            },
+            "wider": {
+              "label": "Breiter"
+            }
+          }
+        },
+        "spacing": {
+          "label": "Elementabstand"
+        },
+        "border_radius": {
+          "label": "Rahmenradius"
+        },
+        "animation_speed": {
+          "label": "Animationsgeschwindigkeit"
+        },
+        "additional_features": {
+          "label": "Zusätzliche Funktionen"
+        },
+        "show_search": {
+          "label": "Suche anzeigen"
+        },
+        "show_contact_link": {
+          "label": "Kontakt-Link anzeigen"
+        },
+        "contact_text": {
+          "label": "Kontakttext",
+          "info": "Text, der vor dem Kontakt-Link angezeigt wird"
+        },
+        "contact_link_text": {
+          "label": "Kontakt-Link-Text"
+        },
+        "contact_link": {
+          "label": "Kontakt-Link-URL"
+        },
+        "show_scroll_top": {
+          "label": "Scroll-nach-oben-Button anzeigen"
+        }
+      },
+      "blocks": {
+        "faq_item": {
+          "name": "FAQ-Element",
+          "settings": {
+            "question": {
+              "label": "Frage"
+            },
+            "answer": {
+              "label": "Antwort"
+            },
+            "category": {
+              "label": "Kategorie",
+              "info": "Wird zum Gruppieren und Filtern von Fragen verwendet"
+            },
+            "button": {
+              "content": "Button-Einstellungen"
+            },
+            "show_button": {
+              "label": "Button anzeigen"
+            },
+            "button_text": {
+              "label": "Button-Text"
+            },
+            "button_link": {
+              "label": "Button-Link"
+            }
+          }
+        }
+      }
+    },
     "footer": {
       "name": "Fußzeile",
       "blocks": {

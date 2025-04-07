@@ -2,7 +2,8 @@
   "current": "Velora",
   "presets": {
     "Default": {
-      "logo_width": 90,
+      "logo": "shopify://shop_images/PeopleSpark_Logo_Featuring_Modern_Bold_Typeface_Design-removebg-preview.png",
+      "logo_width": 150,
       "color_schemes": {
         "scheme-1": {
           "settings": {
@@ -186,7 +187,8 @@
       }
     },
     "Velora": {
-      "logo_width": 90,
+      "logo": "shopify://shop_images/PeopleSpark_Logo_Featuring_Modern_Bold_Typeface_Design-removebg-preview.png",
+      "logo_width": 150,
       "color_schemes": {
         "scheme-1": {
           "settings": {

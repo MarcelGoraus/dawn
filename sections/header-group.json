@@ -2,23 +2,54 @@
   "name": "t:sections.header.name",
   "type": "header",
   "sections": {
-    "announcement-bar": {
-      "type": "announcement-bar",
+    "announcement": {
+      "type": "announcement",
       "blocks": {
-        "announcement-bar-0": {
+        "announcement_1": {
           "type": "announcement",
           "settings": {
-            "text": "Welcome to our store",
-            "text_alignment": "center",
-            "color_scheme": "scheme-1",
+            "text": "Willkommen in unserem Shop",
+            "link": ""
+          }
+        },
+        "announcement_2": {
+          "type": "announcement",
+          "settings": {
+            "text": "Heute haben wir ein super angebot",
+            "link": ""
+          }
+        },
+        "announcement_3": {
+          "type": "announcement",
+          "settings": {
+            "text": "Willkommen in unserem Shop",
             "link": ""
           }
         }
       },
-      "block_order": ["announcement-bar-0"]
+      "block_order": [
+        "announcement_1",
+        "announcement_2",
+        "announcement_3"
+      ],
+      "settings": {
+        "background_color": "#000000",
+        "text_color": "#ffffff",
+        "autoplay": true,
+        "autoplay_speed": 5000
+      }
     },
     "navigation": {
-      "type": "navigation"
+      "type": "navigation",
+      "settings": {
+        "menu": "main-menu",
+        "color_scheme": "scheme-5",
+        "menu_color_scheme": "scheme-5",
+        "enable_country_selector": true,
+        "enable_language_selector": true,
+        "enable_customer_avatar": true,
+        "show_social": true
+      }
     },
     "header": {
       "type": "header",
@@ -38,5 +69,5 @@
       }
     }
   },
-  "order": ["announcement-bar", "navigation", "header"]
+  "order": ["announcement", "navigation", "header"]
 }

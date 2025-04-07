@@ -1,0 +1,416 @@
+{% comment %}
+  About Product Section
+  - Optimized for performance and fast loading
+  - Responsive design with mobile-first approach
+  - Schema.org structured data for SEO
+  - Alpine.js for interactive features (with fallbacks)
+  - Shopify color scheme integration
+  - Lazy loading and performance optimizations
+{% endcomment %}
+
+{% assign section_id = 'about-product-' | append: section.id %}
+
+<style>
+    .about-product {
+        background: transparent;
+    }
+  #{{ section_id }} {
+    --section-padding: {{ section.settings.section_padding | default: 60 }}px;
+    --content-max-width: {{ section.settings.content_max_width | default: 1200 }}px;
+    --image-max-width: {{ section.settings.image_max_width | default: 500 }}px;
+
+    {% if section.settings.color_scheme %}
+      --color-background: {{ section.settings.color_scheme.settings.background }};
+      --color-text: {{ section.settings.color_scheme.settings.text }};
+      --color-heading: {{ section.settings.color_scheme.settings.heading | default: section.settings.color_scheme.settings.text }};
+      --color-accent: {{ section.settings.color_scheme.settings.accent }};
+    {% else %}
+      --color-background: {{ section.settings.background_color | default: '#ffffff' }};
+      --color-text: {{ section.settings.text_color | default: '#333333' }};
+      --color-heading: {{ section.settings.heading_color | default: '#000000' }};
+      --color-accent: {{ section.settings.accent_color | default: '#0066cc' }};
+    {% endif %}
+
+
+    color: var(--color-text);
+    padding: var(--section-padding) 0;
+  }
+
+  #{{ section_id }} .about-product__container {
+    background-color: var(--color-background);
+    max-width: var(--content-max-width);
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  #{{ section_id }} .about-product__content {
+    max-width: 100%;
+  }
+
+  #{{ section_id }} .about-product__title {
+    font-size: 30px;
+    font-weight: 100;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--color-heading);
+  }
+
+  #{{ section_id }} .about-product__description {
+    font-size: clamp(1rem, 3vw, 1.2rem);
+    margin-bottom: 1.5rem;
+    line-height: 1.6;
+    letter-spacing: 0.5px;
+  }
+
+  #{{ section_id }} .about-product__features {
+    margin-top: 1.5rem;
+  }
+
+  #{{ section_id }} .feature-item {
+    margin-bottom: 1rem;
+    padding-left: 1.5rem;
+    position: relative;
+  }
+
+  #{{ section_id }} .feature-item:before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.5rem;
+    width: 0.5rem;
+    height: 0.5rem;
+    background-color: var(--color-accent);
+    border-radius: 50%;
+  }
+
+  #{{ section_id }} .about-product__image {
+    width: 100%;
+    max-width: var(--image-max-width);
+    margin: 0 auto;
+  }
+
+  #{{ section_id }} .about-product__image img {
+    width: 100%;
+    height: 100&;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+  }
+
+  #{{ section_id }} .about-product__image img:hover {
+    transform: scale(1.02);
+  }
+
+  #{{ section_id }} .about-product__cta {
+    margin-top: 1.5rem;
+  }
+
+  #{{ section_id }} .button--primary {
+    display: inline-block;
+    padding: 0.75rem 1.5rem;
+    background-color: var(--color-accent);
+    color: #ffffff;
+    text-decoration: none;
+    border-radius: 4px;
+    font-weight: 600;
+    transition: background-color 0.3s ease;
+  }
+
+  #{{ section_id }} .button--primary:hover {
+    background-color: color-mix(in srgb, var(--color-accent) 80%, black);
+  }
+
+  /* Fallback for browsers without color-mix support */
+  @supports not (background-color: color-mix(in srgb, var(--color-accent) 80%, black)) {
+    #{{ section_id }} .button--primary:hover {
+      opacity: 0.9;
+    }
+  }
+
+  /* Animation classes - will only be used if JS is available */
+  .fade-in {
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+  }
+
+  .fade-in.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  @media (min-width: 768px) {
+    #{{ section_id }} .about-product__container {
+      flex-direction: {{ section.settings.layout }};
+      align-items: center;
+      text-align: {{ section.settings.text_alignment }};
+      gap: 3rem;
+    }
+
+    #{{ section_id }} .about-product__content {
+      flex: 1;
+    }
+
+    #{{ section_id }} .about-product__image {
+      flex: 1;
+    }
+
+    #{{ section_id }}.image-first .about-product__container {
+      flex-direction: row-reverse;
+    }
+  }
+</style>
+
+<section
+  id="{{ section_id }}"
+  class="about-product {% if section.settings.layout == 'row-reverse' %}image-first{% endif %}"
+>
+  <div class="about-product__container">
+    <div class="about-product__content">
+      {% if section.settings.title != blank %}
+        <h2 class="about-product__title fade-in">
+          {{ section.settings.title }}
+        </h2>
+      {% endif %}
+
+      {% if section.settings.heading != blank %}
+        <div class="about-product__description fade-in">
+          {{ section.settings.heading }}
+        </div>
+      {% endif %}
+
+      {% if section.settings.subheading != blank %}
+        <div class="about-product__features fade-in">
+          <div class="feature-item">{{ section.settings.subheading }}</div>
+        </div>
+      {% endif %}
+    </div>
+
+    {% if section.settings.image != blank %}
+      <div class="about-product__image fade-in">
+        <img
+          loading="lazy"
+          decoding="async"
+          src="{{ section.settings.image | image_url: width: section.settings.image_max_width | default: 500 }}"
+          width="{{ section.settings.image.width }}"
+          height="{{ section.settings.image.height }}"
+          alt="{{ section.settings.image.alt | default: section.settings.title | escape }}"
+        >
+      </div>
+    {% endif %}
+  </div>
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org/",
+      "@type": "Product",
+      "name": "{{ section.settings.title | escape }}",
+      "description": "{{ section.settings.description | strip_html | escape }}",
+      {% if section.settings.image != blank %}
+      "image": "{{ section.settings.image | image_url }}",
+      {% endif %}
+      "offers": {
+        "@type": "Offer",
+        "availability": "https://schema.org/InStock"
+        {% if product.selected_or_first_available_variant.price %}
+        ,"price": "{{ product.selected_or_first_available_variant.price | money_without_currency | strip_html }}"
+        ,"priceCurrency": "{{ shop.currency }}"
+        {% endif %}
+      }
+      {% if section.settings.features != blank %}
+      ,"additionalProperty": [
+        {% assign features = section.settings.features | split: ',' %}
+        {% for feature in features %}
+          {
+            "@type": "PropertyValue",
+            "name": "Feature",
+            "value": "{{ feature | strip | escape }}"
+          }{% unless forloop.last %},{% endunless %}
+        {% endfor %}
+      ]
+      {% endif %}
+    }
+  </script>
+</section>
+
+<script>
+  // Einfache Intersection Observer Implementation ohne Alpine.js-Abhängigkeit
+  document.addEventListener('DOMContentLoaded', function () {
+    const sectionId = '{{ section_id }}';
+    const fadeElements = document.querySelectorAll(`#${sectionId} .fade-in`);
+
+    if ('IntersectionObserver' in window) {
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('visible');
+              observer.unobserve(entry.target); // Nur einmal animieren
+            }
+          });
+        },
+        {
+          root: null,
+          rootMargin: '0px',
+          threshold: 0.1,
+        }
+      );
+
+      fadeElements.forEach((el) => observer.observe(el));
+    } else {
+      // Fallback für Browser ohne IntersectionObserver
+      fadeElements.forEach((el) => el.classList.add('visible'));
+    }
+  });
+</script>
+
+{% schema %}
+{
+  "name": "About Product",
+  "class": "about-product-section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "About This Product"
+    },
+    {
+      "type": "richtext",
+      "id": "heading",
+      "label": "Heading",
+      "default": "<p>Description of the product goes here. You can add more details about the product, its features, and benefits.</p>"
+    },
+    {
+      "type": "richtext",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "<p>Subheading or additional information about the product.</p>"
+    },
+    {
+      "type": "header",
+      "content": "Media"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image"
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "layout",
+      "label": "Desktop layout",
+      "options": [
+        {
+          "value": "row",
+          "label": "Text first, then image"
+        },
+        {
+          "value": "row-reverse",
+          "label": "Image first, then text"
+        }
+      ],
+      "default": "row"
+    },
+    {
+      "type": "select",
+      "id": "text_alignment",
+      "label": "Text alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "range",
+      "id": "section_padding",
+      "min": 20,
+      "max": 100,
+      "step": 10,
+      "unit": "px",
+      "label": "Section padding",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "content_max_width",
+      "min": 800,
+      "max": 1600,
+      "step": 100,
+      "unit": "px",
+      "label": "Content max width",
+      "default": 1200
+    },
+    {
+      "type": "range",
+      "id": "image_max_width",
+      "min": 300,
+      "max": 800,
+      "step": 50,
+      "unit": "px",
+      "label": "Image max width",
+      "default": 500
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "info": "Theme color scheme"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color (fallback)",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color (fallback)",
+      "default": "#333333"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading color (fallback)",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Accent color (fallback)",
+      "default": "#0066cc"
+    }
+  ],
+  "presets": [
+    {
+      "name": "About Product",
+      "category": "Product Information"
+    }
+  ]
+}
+{% endschema %}

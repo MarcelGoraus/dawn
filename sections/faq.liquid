@@ -1,0 +1,360 @@
+{% comment %}
+  FAQ Section - Responsive Edition
+  Features:
+  - Responsive Design für alle Geräte
+  - Alpine.js für sanfte Animationen
+  - Vanilla CSS ohne zusätzliche Bibliotheken
+  - Barrierefreiheit (WCAG 2.1 AA)
+  - Schema.org-Integration für SEO
+  - Anpassbare Farbschemata und Abstände
+{% endcomment %}
+
+<style>
+  :root {
+    --bg-rgb: {{ section.settings.color_scheme.settings.background | color_to_rgb | remove: 'rgb(' | remove: ')' }};
+    --text-rgb: {{ section.settings.color_scheme.settings.text | color_to_rgb | remove: 'rgb(' | remove: ')' }};
+    --bg: {{ section.settings.color_scheme.settings.background }};
+    --text: {{ section.settings.color_scheme.settings.text }};
+    --btn: {{ section.settings.color_scheme.settings.button }};
+    --btn-text: {{ section.settings.color_scheme.settings.button_label }};
+    --shadow-rgb: {{ section.settings.color_scheme.settings.shadow | color_to_rgb | remove: 'rgb(' | remove: ')' }};
+    --accent: {{ section.settings.color_scheme.settings.accent | default: section.settings.color_scheme.settings.button }};
+    --radius: {{ section.settings.border_radius }}px;
+    --transition: {{ section.settings.animation_speed }}ms;
+  }
+
+  .faq-section {
+    padding: 48px 16px;
+    background-color: var(--bg);
+    color: var(--text);
+    width: 100%;
+  }
+
+  .faq-container {
+    max-width: {{ section.settings.content_width }}px;
+    margin-inline: auto;
+  }
+
+  .faq-header {
+    text-align: center;
+    margin-bottom: 40px;
+  }
+
+  .faq-heading {
+    font-size: 30px;
+    line-height: calc(2.25 / 1.875);
+    font-weight: 700;
+    letter-spacing: -0.025em;
+  }
+
+  .faq-description {
+    margin-top: 16px;
+    font-size: 18px;
+    line-height: calc(1.75 / 1.125);
+    margin-inline: auto;
+  }
+
+  .faq-items {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .faq-item {
+    border-bottom: 1px solid rgba(var(--text-rgb), 0.1);
+    overflow: hidden;
+    transition: background-color var(--transition) ease;
+  }
+
+  .faq-question {
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    border-bottom: 1px solid transparent;
+    transition: border-color var(--transition) ease;
+  }
+
+  .faq-question h3 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 400;
+    font-weight: 100;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+  }
+
+  .faq-icon {
+    position: relative;
+    width: 20px;
+    height: 20px;
+  }
+
+  .faq-icon svg {
+    width: 20px;
+    height: 20px;
+    transition: transform var(--transition) ease;
+  }
+
+  /* Spin-Animation für das SVG-Icon */
+  .faq-item.active .faq-icon svg {
+    transform: rotate(180deg);
+  }
+
+  .faq-icon .vertical {
+    transition: transform var(--transition) ease;
+  }
+
+  .faq-item.active .faq-icon .vertical {
+    transform: rotate(270deg);
+  }
+
+  .faq-answer {
+    padding: 0 20px;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height var(--transition) ease;
+  }
+
+  .faq-answer-inner {
+    padding-bottom: 20px;
+  }
+
+  @media (min-width: 640px) {
+    .faq-section {
+      padding: 15px 24px;
+    }
+  }
+
+  @media (min-width: 768px) {
+    .faq-section {
+      padding: 64px 15px
+    }
+
+    .faq-heading {
+      font-size: 36px;
+      line-height: calc(2.5 / 2.25);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .faq-section {
+      padding: 64px 15px
+    }
+  }
+</style>
+
+<section
+  x-data="{ activeItem: null }"
+  class="faq-section"
+  data-color-scheme="{{ section.settings.color_scheme }}"
+  data-section-id="{{ section.id }}"
+  data-section-type="faq"
+  aria-labelledby="faq-heading-{{ section.id }}"
+>
+  <div class="faq-container">
+    <div class="faq-header">
+      <h2 id="faq-heading-{{ section.id }}" class="faq-heading">
+        {{ section.settings.faq_title | escape }}
+      </h2>
+      {% if section.settings.faq_description != blank %}
+        <div class="faq-description">
+          {{ section.settings.faq_description }}
+        </div>
+      {% endif %}
+    </div>
+
+    <div class="faq-items">
+      {% for block in section.blocks %}
+        {% if block.type == 'faq_item' and block.settings.question != blank and block.settings.answer != blank %}
+          {% assign item_id = 'faq-' | append: section.id | append: '-' | append: forloop.index %}
+          <div
+            class="faq-item"
+            x-data="{ id: {{ forloop.index }} }"
+            :class="{ 'active': activeItem === id }"
+          >
+            <div
+              class="faq-question"
+              @click="activeItem = activeItem === id ? null : id"
+              :aria-expanded="activeItem === id"
+              aria-controls="{{ item_id }}"
+            >
+              <h3>{{ block.settings.question }}</h3>
+              <div class="faq-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                  <path class="horizontal" d="M3.125 10H16.875" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                  <path class="vertical" d="M10 3.125L10 16.875" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                </svg>
+              </div>
+            </div>
+            <div
+              id="{{ item_id }}"
+              class="faq-answer"
+              x-ref="content"
+              :style="activeItem === id ? 'max-height: ' + $refs.content.scrollHeight + 'px' : ''"
+            >
+              <div class="faq-answer-inner">
+                {{ block.settings.answer }}
+              </div>
+            </div>
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+{%- if section.blocks.size > 0 -%}
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {%- for block in section.blocks -%}
+          {%- if block.type == 'faq_item' and block.settings.question != blank and block.settings.answer != blank -%}
+            {
+              "@type": "Question",
+              "name": {{ block.settings.question | json }},
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": {{ block.settings.answer | strip_html | json }}
+              }
+              {% if block.settings.category != blank %},
+                "category": {{ block.settings.category | json }}
+              {% endif %}
+            }
+            {%- unless forloop.last -%},{%- endunless -%}
+          {%- endif -%}
+        {%- endfor -%}
+      ]
+    }
+  </script>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "FAQ",
+  "tag": "section",
+  "class": "section",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:sections.all.colors.label",
+      "default": "scheme-1"
+    },
+    {
+      "type": "text",
+      "id": "faq_title",
+      "label": "t:sections.faq.settings.faq_title.label",
+      "default": "Häufig gestellte Fragen"
+    },
+    {
+      "type": "richtext",
+      "id": "faq_description",
+      "label": "t:sections.faq.settings.faq_description.label",
+      "default": "<p>Hier finden Sie Antworten auf die häufigsten Fragen zu unseren Produkten und Dienstleistungen.</p>"
+    },
+    {
+      "type": "range",
+      "id": "content_width",
+      "min": 600,
+      "max": 1200,
+      "step": 50,
+      "unit": "px",
+      "label": "t:sections.faq.settings.content_width.label",
+      "default": 800
+    },
+    {
+      "type": "range",
+      "id": "border_radius",
+      "min": 0,
+      "max": 20,
+      "step": 1,
+      "default": 8,
+      "label": "t:sections.faq.settings.border_radius.label",
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "animation_speed",
+      "min": 100,
+      "max": 500,
+      "step": 50,
+      "default": 300,
+      "label": "t:sections.faq.settings.animation_speed.label",
+      "unit": "ms"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.all.padding.section_padding_heading"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_top",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_bottom",
+      "default": 36
+    }
+  ],
+  "blocks": [
+    {
+      "type": "faq_item",
+      "name": "t:sections.faq.blocks.faq_item.name",
+      "settings": [
+        {
+          "type": "text",
+          "id": "question",
+          "label": "t:sections.faq.blocks.faq_item.settings.question.label",
+          "default": "Wie kann ich ein Produkt zurücksenden?"
+        },
+        {
+          "type": "richtext",
+          "id": "answer",
+          "label": "t:sections.faq.blocks.faq_item.settings.answer.label",
+          "default": "<p>Wir bieten eine 30-tägige Rückgabegarantie für die meisten Artikel. Um eine Rücksendung zu starten, besuchen Sie bitte unser Rücksendezentrum mit Ihrer Bestellnummer und Details zum Produkt, das Sie zurücksenden möchten. Wir stellen ein kostenloses Rücksendeetikett zur Verfügung und bearbeiten Ihre Rückerstattung innerhalb von 5-7 Werktagen nach Erhalt des zurückgesendeten Artikels.</p>"
+        },
+        {
+          "type": "text",
+          "id": "category",
+          "label": "t:sections.faq.blocks.faq_item.settings.category.label",
+          "info": "t:sections.faq.blocks.faq_item.settings.category.info"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:sections.faq.presets.name",
+      "blocks": [
+        {
+          "type": "faq_item"
+        },
+        {
+          "type": "faq_item"
+        },
+        {
+          "type": "faq_item"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

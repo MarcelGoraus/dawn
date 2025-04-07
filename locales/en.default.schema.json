@@ -978,6 +978,94 @@
         "name": "Featured product"
       }
     },
+    "faq": {
+      "name": "FAQ",
+      "settings": {
+        "faq_title": {
+          "label": "Title"
+        },
+        "faq_description": {
+          "label": "Description"
+        },
+        "content_width": {
+          "label": "Content width",
+          "options": {
+            "narrow": {
+              "label": "Narrow"
+            },
+            "standard": {
+              "label": "Standard"
+            },
+            "wide": {
+              "label": "Wide"
+            },
+            "wider": {
+              "label": "Wider"
+            }
+          }
+        },
+        "spacing": {
+          "label": "Item spacing"
+        },
+        "border_radius": {
+          "label": "Border radius"
+        },
+        "animation_speed": {
+          "label": "Animation speed"
+        },
+        "additional_features": {
+          "label": "Additional features"
+        },
+        "show_search": {
+          "label": "Show search"
+        },
+        "show_contact_link": {
+          "label": "Show contact link"
+        },
+        "contact_text": {
+          "label": "Contact text",
+          "info": "Text displayed before the contact link"
+        },
+        "contact_link_text": {
+          "label": "Contact link text"
+        },
+        "contact_link": {
+          "label": "Contact link URL"
+        },
+        "show_scroll_top": {
+          "label": "Show scroll to top button"
+        }
+      },
+      "blocks": {
+        "faq_item": {
+          "name": "FAQ Item",
+          "settings": {
+            "question": {
+              "label": "Question"
+            },
+            "answer": {
+              "label": "Answer"
+            },
+            "category": {
+              "label": "Category",
+              "info": "Used for grouping and filtering questions"
+            },
+            "button": {
+              "content": "Button settings"
+            },
+            "show_button": {
+              "label": "Show button"
+            },
+            "button_text": {
+              "label": "Button text"
+            },
+            "button_link": {
+              "label": "Button link"
+            }
+          }
+        }
+      }
+    },
     "footer": {
       "name": "Footer",
       "blocks": {
